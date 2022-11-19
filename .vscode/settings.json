@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["datetime", "dewpt"]
+  "cSpell.words": ["datetime", "dewpt", "geolocator", "latloc"],
+  "java.configuration.updateBuildConfiguration": "interactive"
 }
