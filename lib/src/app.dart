@@ -14,13 +14,40 @@ class AppState extends State<App> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: const Center(
-          child: Text("Weather App"),
+        body: Center(
+          child: Column(
+            children: [
+              texField(),
+              button(),
+            ],
+          ),
         ),
         appBar: AppBar(
           title: const Text("Weather App"),
         ),
       ),
+    );
+  }
+
+  Widget texField() {
+    return const Padding(
+      padding: EdgeInsets.all(15),
+      child: TextField(
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          label: Text("Enter City Name"),
+        ),
+      ),
+    );
+  }
+
+  Widget button() {
+    return ElevatedButton(
+      onPressed: () {
+        print("Button Pressed");
+        setState(() {});
+      },
+      child: const Text("Get Weather"),
     );
   }
 }
