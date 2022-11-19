@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' show get;
 
+import 'models/weather_model.dart';
+
 class App extends StatefulWidget {
   const App({super.key});
 
@@ -13,6 +15,9 @@ class App extends StatefulWidget {
 }
 
 class AppState extends State<App> {
+  var textFieldController = TextEditingController();
+  WeatherModel? weatherModel;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,6 +27,9 @@ class AppState extends State<App> {
             children: [
               texField(),
               button(),
+              const Padding(padding: EdgeInsets.all(10)),
+              Text(
+                  "${weatherModel?.data?[0].appTemp ?? "Enter correct city name"}"),
             ],
           ),
         ),
@@ -33,10 +41,11 @@ class AppState extends State<App> {
   }
 
   Widget texField() {
-    return const Padding(
-      padding: EdgeInsets.all(15),
+    return Padding(
+      padding: const EdgeInsets.all(15),
       child: TextField(
-        decoration: InputDecoration(
+        controller: textFieldController,
+        decoration: const InputDecoration(
           border: OutlineInputBorder(),
           label: Text("Enter City Name"),
         ),
@@ -47,7 +56,7 @@ class AppState extends State<App> {
   Widget button() {
     return ElevatedButton(
       onPressed: () async {
-        await getWeather("Dhaka");
+        weatherModel = await getWeather(textFieldController.text);
         setState(() {});
       },
       child: const Text("Get Weather"),
@@ -61,8 +70,7 @@ class AppState extends State<App> {
     try {
       var res = await get(Uri.parse(url));
       if (res.statusCode == 200) {
-        print(json.decode(res.body));
-        return res;
+        return WeatherModel.fromJson(json.decode(res.body));
       }
     } catch (e) {
       return null;
